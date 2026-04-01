@@ -17,7 +17,6 @@ import { useState } from "react";
 // Cada um representa um tipo de elemento na tela (caixas,texto,entrada etc...)
  
 import {
-  Alert,
   Button,
   StatusBar, //Barra de status do sistema (hora,bateria); podendo ajustar o estilo
   StyleSheet, //API para criar estilo de forma otimizada e tipada
@@ -25,9 +24,10 @@ import {
   TextInput, //Campo onde o usuario digita
   TouchableOpacity, //Area de toque com feedback visual (opacidade ao tocar)
   View //Container generico - equivalente <div> na web, agrupar o layout
- 
  } from "react-native";
  
+ //Importamos a segunda tela crida no arquivo separado SegundaTela.tsx
+import SegundaTela from './SegundaTela';
  /**
   * Componente functional App: é uma função que retorna o que deve aparecer na tela.
   * Em React Native, a árvore de componentes começa normalmente nesse arquivo
@@ -42,6 +42,12 @@ import {
    //Função chamada sempre que o usuário altera o texto no TextInput.
    //o parámetro "texto" é conteúdo atual do campo após a digitação.
  
+   //Estado que representa qual tela está ativa
+   //'home' = primeira tela (esta conteúdo).
+   //'segunda' = componente segunda tela (SegundaTela.tsx)
+   const [telaAtual, setTelaAtual] = useState<'home' | 'segunda'>('home');
+
+
    const aoDigitarNome = (texto: string) => {
     //Atualiza o estado; a interface mostrará "Olá, ..." com novo valor.
     setNome(texto);
@@ -50,7 +56,26 @@ import {
    const limparNome = () => {
      setNome('');
    };
- 
+   //Função que 'navaga' para a segunda tela
+   //Função para ir para a segunda tela (SegundaTela.tsx)
+   const irParaSegundaTela = () => {
+     setTelaAtual('home');
+   };
+
+   // Funçao para voltar para a tela inicial (home) a partir da segunda tela
+   const voltarParaHome = () => {
+     setTelaAtual('home');
+   };
+
+   //Navegação sem biblioteca 
+   //se a tela atual for 'segunda', renderiza o componente SegundaTela
+   //Note a passagem de props:
+   //- nome{nome} envia o nome digitado.
+   //aoVoltar{voltarParaHome} envia a função para voltar.
+    if (telaAtual === 'segunda') {
+      return <SegundaTela nome={name} aoVoltar={voltarParaHome} />;
+    }
+
    //return com JSX/TSX: Descrever a hierarquia visual da tela.
    return (
     //View é o container principal: ocupa a tela e centraliza o conteúdo (via estilos)
@@ -82,17 +107,8 @@ import {
        } */}
  
        <View style={styles.espacoBotao}>
-          <Button
-          title = "Mostrar saudação (alerta)" //Texto do botão
-          color = "#2563eb" //Cor do botão
-          onPress={() => {  //Ao clicar aciona
-            Alert.alert(
-              'Olá, ', name.trim()
-              ? `Prazer em te conhecer, ${name.trim()}!`
-              : 'Digite um nome ao campo acima',
-              ) //Aciona o alert com a mensagem definida
-          }}
-          />
+          <Button title="Ir para Segunda Tela"
+          color="#2563eb" onPress={irParaSegundaTela}/>
        </View>
        <Text style={styles.saudacao}>Ola, {name}</Text>
        {/*Botão extra: TouchableOpacity envolve o Text para estio customizado */}
