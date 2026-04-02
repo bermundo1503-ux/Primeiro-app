@@ -36,4 +36,76 @@ function SegundaTela({ nome, aoVoltar }: SegundaTelaProps) {
  const aoPressionarMostrarMensagem = () => {
     //Atualizamos o estado para true e o React re-renderiza a tela.
     setMensagemRecebida(true);
- }
+ };
+
+  // JSX/TSX da segunda tela
+    return (
+        //view principal ocupando a tela e centralizando o elementos
+        <View style={styles.container}>
+            {/* Titulo para orientar o usuário */}
+            <text style={styles.titulo}>Segunda Tela</text>
+
+            {/* Texto que usa o props: o nome veio da primeira tela */}
+            <text style={styles.boasvindas}>Bem Vindo, {nome}</text>
+            <view  style={styles.espacoBotao}>
+                <Button
+                    title="Mostrar mensagem"
+                    color="#2563ed"
+                    onPress={aoPressionarMostrarMensagem}
+                />
+            </view>
+            {/*Renderizaçao condicional:
+             só mostra a mensagem se o estado mensagemRecebida for true. */}
+            {mensagemRecebida && (
+                <text style={styles.mensagem}>Feliz Pascoa !!!</text>
+            )}
+            <view style={styles.espacoBotao}>
+                <Button
+                    title="Voltar"
+                    color="#6b7280"
+                    onPress={aoVoltar}
+                />
+            </view>
+        </View> 
+    );
+}
+//Estilos para a segunda tela
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5'
+        },
+        //titulo da tela
+        titulo: {
+            fontSize: 28,
+            fontWeight: '700',
+            color: '#111827',
+            marginBottom: 20,
+            textAlign: 'center',
+        },
+        //texto de boas vindas que mostra o nome recebido pela props
+        boasvindas: {
+            fontSize: 20,
+            fontWeight: '600',
+            color: '#1f2937',
+            marginBottom: 20,
+            textAlign: 'center',
+        },
+    //espaco para segundo os botões dos outos elememtos
+    espacoBotao: {
+        width: '100%',
+        maxWidth: 320,
+        marginBottom: 14,
+    },
+    //mensagem exibida ao pressionar o botão
+    mensagem: {
+        fontSize: 18,
+        color: '#1f2937',
+        marginBottom: 18,
+        textAlign: 'center',
+    },
+})
+
+export default SegundaTela;
